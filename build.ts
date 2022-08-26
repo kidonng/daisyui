@@ -42,7 +42,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 				// UnoCSS transforms `hsl(var(--foo))` to `hsla(var(--foo), var(--un-bar))`
 				// So use command to separate values
 				.map(([prop, value]) =>
-					[prop, (value as string).replaceAll(' ', ',')].join(': '),
+					[prop, (value as string).replaceAll(' ', ', ')].join(': '),
 				)
 				.join(';\n\t\t\t')}
 		}
