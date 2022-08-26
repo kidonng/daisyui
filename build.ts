@@ -24,10 +24,9 @@ for (const dir of dirs) {
 		if (!name.endsWith('.css')) continue
 
 		const file = `${dir}/${name}`
-		const rawCss = Deno.readTextFileSync(file).replace(
-			/--tw-([\w-]+)/g,
-			'--un-$1',
-		)
+		const rawCss = Deno.readTextFileSync(file)
+			.replace(/--tw-([\w-]+)/g, '--un-$1')
+			.replace(/(hsla?\(var\([-\w]+\)) ?\//g, '$1,')
 		const {css} = processor.process(rawCss)
 		const dest = `${destDir}/${name}`
 
