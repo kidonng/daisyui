@@ -1,0 +1,16 @@
+{
+	"name": "@kidonng/daisyui",
+	"version": "0.0.0",
+	"description": "Redistribution of daisyUI",
+	"scripts": {
+		"prepack": "deno task build"
+	},
+	"repository": "kidonng/daisyui",
+	"license": "MIT",
+	"author": "Kid <hi@xuann.wang> (https://xuann.wang/)",
+	"files": [
+		"components",
+		"themes",
+		"utilities"
+	]
+}

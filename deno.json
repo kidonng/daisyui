@@ -1,0 +1,11 @@
+{
+	"tasks": {
+		"build": "deno run -A build.ts"
+	},
+	"lint": {
+		"files": {
+			"exclude": ["daisyui"]
+		}
+	},
+	"importMap": "import_map.json"
+}
