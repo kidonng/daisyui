@@ -18,7 +18,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
           registry-url: https://registry.npmjs.org/
       - uses: denoland/setup-deno@v1
       - run: |
