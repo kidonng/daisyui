@@ -19,7 +19,11 @@ for (const dir of dirs) {
 		if (!name.endsWith('.css')) continue
 
 		const file = `${dir}/${name}`
-		const {css} = processor.process(Deno.readTextFileSync(file))
+		const rawCss = Deno.readTextFileSync(file).replace(
+			/--tw-([\w-]+)/g,
+			'--un-$1',
+		)
+		const {css} = processor.process(rawCss)
 		const dest = `${destDir}/${name}`
 
 		console.log('Writing', dest)
