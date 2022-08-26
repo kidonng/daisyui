@@ -11,6 +11,11 @@ const dirs = [...expandGlobSync(`${root}/{components,utilities}/*`)]
 	.filter((i) => i.isDirectory)
 	.map((i) => i.path)
 
+const writeIndex = (dir: string, file: string) =>
+	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
+		append: true,
+	})
+
 for (const dir of dirs) {
 	const destDir = dir.replace(`${Deno.cwd()}/${root}/`, '')
 	emptyDirSync(destDir)
@@ -28,9 +33,7 @@ for (const dir of dirs) {
 
 		console.log('Writing', dest)
 		Deno.writeTextFileSync(dest, css)
-		Deno.writeTextFileSync(`${destDir}/index.css`, `@import "./${name}";\n`, {
-			append: true,
-		})
+		writeIndex(destDir, name)
 	}
 }
 
@@ -38,6 +41,9 @@ const themesDir = 'themes'
 emptyDirSync(themesDir)
 
 const auto: string[] = []
+const autoCss = 'auto.css'
+
+writeIndex(themesDir, autoCss)
 
 for (const [selector, theme] of Object.entries(themes)) {
 	const [, name] = /\[data-theme=(.+)]/.exec(selector)!
@@ -59,16 +65,14 @@ for (const [selector, theme] of Object.entries(themes)) {
 
 	console.log('Writing', dest)
 	Deno.writeTextFileSync(dest, css)
-	Deno.writeTextFileSync(`${themesDir}/index.css`, `@import "./${file}";\n`, {
-		append: true,
-	})
+	writeIndex(themesDir, file)
 
 	if (name === 'dark' || name === 'light')
 		auto.push(css.replace(selector, ':root'))
 }
 
 Deno.writeTextFileSync(
-	`${themesDir}/auto.css`,
+	`${themesDir}/${autoCss}`,
 	// Dark style should go after light style
 	// In the `auto` array it's reversed
 	`${auto[1]}\n@media (prefers-color-scheme: dark) {\n${auto[0]}\n}`,
