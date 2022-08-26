@@ -37,6 +37,8 @@ for (const dir of dirs) {
 const themesDir = 'themes'
 emptyDirSync(themesDir)
 
+const auto: string[] = []
+
 for (const [selector, theme] of Object.entries(themes)) {
 	const [, name] = /\[data-theme=(.+)]/.exec(selector)!
 	const vars = functions.convertToHsl(theme)
@@ -48,7 +50,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 				.map(([prop, value]) =>
 					[prop, (value as string).replaceAll(' ', ', ')].join(': '),
 				)
-				.join(';\n\t\t\t')}
+				.join(';\n\t\t\t')};
 		}
 	`).trim()
 
@@ -60,4 +62,14 @@ for (const [selector, theme] of Object.entries(themes)) {
 	Deno.writeTextFileSync(`${themesDir}/index.css`, `@import "./${file}";\n`, {
 		append: true,
 	})
+
+	if (name === 'dark' || name === 'light')
+		auto.push(css.replace(selector, ':root'))
 }
+
+Deno.writeTextFileSync(
+	`${themesDir}/auto.css`,
+	// Dark style should go after light style
+	// In the `auto` array it's reversed
+	`${auto[1]}\n@media (prefers-color-scheme: dark) {\n${auto[0]}\n}`,
+)

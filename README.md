@@ -13,7 +13,8 @@ Selectively import styles:
 ```css
 @import '@kidonng/daisyui/components/unstyled/button.css';
 @import '@kidonng/daisyui/components/styled/button.css';
-@import '@kidonng/daisyui/themes/light.css';
+/* Light/dark based on system color scheme */
+@import '@kidonng/daisyui/themes/auto.css';
 @import '@kidonng/daisyui/utilities/unstyled/button.css';
 ```
 
@@ -30,5 +31,5 @@ Import all styles:
 To apply a theme, specify it in the markup:
 
 ```html
-<body data-theme="light"></body>
+<body data-theme="cupcake"></body>
 ```
