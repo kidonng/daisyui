@@ -3,6 +3,14 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: denoland/setup-deno@v1
+      - run: deno task build
   deno-lint:
     runs-on: ubuntu-latest
     steps:
