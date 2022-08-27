@@ -1,4 +1,5 @@
-import {expandGlobSync, emptyDirSync} from 'std/fs/mod.ts'
+import {expandGlobSync, emptyDirSync, ensureDirSync} from 'std/fs/mod.ts'
+import {dirname, basename} from 'std/path/mod.ts'
 import postcss from 'postcss'
 import nested from 'postcss-nested'
 import stripIndent from 'strip-indent'
@@ -7,39 +8,34 @@ import functions from 'daisyui/src/colors/functions'
 
 const processor = postcss([nested])
 const root = 'daisyui/src'
-const dirs = [...expandGlobSync(`${root}/{components,utilities}/*`)]
-	.filter((i) => i.isDirectory)
-	.map((i) => i.path)
+const dirs = ['themes', 'components', 'utilities']
+const [themesDir] = dirs
 
 const writeIndex = (dir: string, file: string) =>
 	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
 		append: true,
 	})
 
-for (const dir of dirs) {
-	const destDir = dir.replace(`${Deno.cwd()}/${root}/`, '')
-	emptyDirSync(destDir)
+for (const dir of dirs) emptyDirSync(dir)
 
-	for (const {name} of Deno.readDirSync(dir)) {
-		if (!name.endsWith('.css')) continue
+for (const {path} of expandGlobSync(
+	`${root}/{${dirs.slice(1).join(',')}}/**/*.css`,
+)) {
+	const dest = path.replace(`${Deno.cwd()}/${root}/`, '')
+	const destDir = dirname(dest)
+	ensureDirSync(destDir)
 
-		const file = `${dir}/${name}`
-		const rawCss = Deno.readTextFileSync(file)
-			.replace(/--tw-([\w-]+)/g, '--un-$1')
-			.replace(/(hsla?\(var\([-\w]+\)) ?\//g, '$1,')
-		const {css} = processor.process(rawCss)
-		const dest = `${destDir}/${name}`
+	const rawCss = Deno.readTextFileSync(path)
+		.replace(/--tw-([\w-]+)/g, '--un-$1')
+		.replace(/(hsla?\(var\([-\w]+\)) ?\//g, '$1,')
+	const {css} = processor.process(rawCss)
 
-		console.log('Writing', dest)
-		Deno.writeTextFileSync(dest, css)
-		writeIndex(destDir, name)
-	}
+	console.log('Writing', dest)
+	Deno.writeTextFileSync(dest, css)
+	writeIndex(destDir, basename(dest))
 }
 
-const themesDir = 'themes'
-emptyDirSync(themesDir)
-
-const auto: string[] = []
+const auto = new Map<string, string>()
 const autoCss = 'auto.css'
 
 writeIndex(themesDir, autoCss)
@@ -67,12 +63,15 @@ for (const [selector, theme] of Object.entries(themes)) {
 	writeIndex(themesDir, file)
 
 	if (name === 'dark' || name === 'light')
-		auto.push(css.replace(selector, ':root'))
+		auto.set(name, css.replace(selector, ':root'))
 }
 
+const autoDest = `${themesDir}/${autoCss}`
+console.log('Writing', autoDest)
 Deno.writeTextFileSync(
-	`${themesDir}/${autoCss}`,
+	autoDest,
 	// Dark style should go after light style
-	// In the `auto` array it's reversed
-	`${auto[1]}\n@media (prefers-color-scheme: dark) {\n${auto[0]}\n}`,
+	`${auto.get('light')}\n@media (prefers-color-scheme: dark) {\n${auto.get(
+		'dark',
+	)}\n}`,
 )
