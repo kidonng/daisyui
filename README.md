@@ -6,6 +6,12 @@ This is a redistribution of [daisyUI](https://github.com/saadeghi/daisyui). It i
 - `@apply` directives are preserved
 - Theme variables are comma separated (instead of space)
 
+## Installation
+
+```sh
+npm installl @kidonng/daisyui
+```
+
 ## Usage
 
 Import all styles:
