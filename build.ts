@@ -8,18 +8,22 @@ import functions from 'daisyui/src/colors/functions'
 
 const processor = postcss([nested])
 const root = 'daisyui/src'
+// Utilities should go last
 const dirs = ['themes', 'components', 'utilities']
-const [themesDir] = dirs
+const [themesDir, ...styleDirs] = dirs
 
-const writeIndex = (dir: string, file: string) =>
+const writeIndex = (dir: string, file: string, append = true) =>
 	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
-		append: true,
+		append,
 	})
 
-for (const dir of dirs) emptyDirSync(dir)
+for (const dir of dirs) {
+	emptyDirSync(dir)
+	writeIndex('.', `${dir}/index.css`, dir !== dirs[0])
+}
 
 for (const {path} of expandGlobSync(
-	`${root}/{${dirs.slice(1).join(',')}}/**/*.css`,
+	`${root}/{${styleDirs.join(',')}}/**/*.css`,
 )) {
 	const dest = path.replace(`${Deno.cwd()}/${root}/`, '')
 	const destDir = dirname(dest)
@@ -33,6 +37,28 @@ for (const {path} of expandGlobSync(
 	console.log('Writing', dest)
 	Deno.writeTextFileSync(dest, css)
 	writeIndex(destDir, basename(dest))
+}
+
+const order = new Map([
+	['global', 0],
+	['unstyled', 1],
+	['styled', 2],
+])
+
+for (const dir of styleDirs) {
+	const ordered: string[] = []
+	const unordered: string[] = []
+
+	for (const {name} of Deno.readDirSync(dir)) {
+		if (order.has(name)) {
+			ordered[order.get(name)!] = name
+		} else {
+			unordered.push(name)
+		}
+	}
+
+	for (const name of [...ordered.filter(Boolean), ...unordered])
+		writeIndex(dir, `${name}/index.css`)
 }
 
 const auto = new Map<string, string>()
