@@ -2,9 +2,10 @@
 
 This is a redistribution of [daisyUI](https://github.com/saadeghi/daisyui). It is intended to be used with frameworks other than Tailwind CSS, such as [UnoCSS](https://github.com/kidonng/unocss-preset-daisy).
 
-- Nested rules are unwrapped
-- `@apply` directives are preserved
-- Theme variables are comma separated (instead of space)
+- [Nested rules are unwrapped](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L9)
+- `@apply` directives are preserved (to be processed by [@unocss/transformer-directives](https://github.com/unocss/unocss/tree/main/packages/transformer-directives))
+- [Theme](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L75-L79) and [`hsla()`](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L34) variables are comma separated (instead of space)
+- [`--tw-*-` variables are renamed to `--un-*`](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L33)
 
 ## Installation
 
