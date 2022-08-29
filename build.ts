@@ -38,6 +38,18 @@ for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
 for (const {path} of expandGlobSync(
 	`${root}/{${styleDirs.join(',')}}/**/*.css`,
 )) {
+	if (
+		[
+			// Does anyone actually use this?
+			// See https://github.com/saadeghi/daisyui/issues/1069
+			'utilities/global/fontSize.css',
+			// Already comes with UnoCSS
+			// Example: https://uno.antfu.me/?s=min-h-6
+			'utilities/global/sizing.css',
+		].some((file) => path.endsWith(file))
+	)
+		continue
+
 	const dest = stripRoot(path)
 	const destDir = dirname(dest)
 	ensureDirSync(destDir)
