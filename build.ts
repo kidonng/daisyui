@@ -14,6 +14,8 @@ const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
 const dirs = ['base', 'themes', 'components', 'utilities']
 const [baseDir, themesDir, ...styleDirs] = dirs
 
+const replacePrefix = (css: string) => css.replace(/--tw-([\w-]+)/g, '--un-$1')
+
 const writeIndex = (dir: string, file: string, append = true) =>
 	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
 		append,
@@ -26,9 +28,10 @@ for (const dir of dirs) {
 
 for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
 	const dest = stripRoot(path)
+	const css = replacePrefix(Deno.readTextFileSync(path))
 
 	console.log('Writing', dest)
-	Deno.copyFileSync(path, dest)
+	Deno.writeTextFileSync(dest, css)
 	writeIndex(baseDir, basename(dest))
 }
 
@@ -39,9 +42,10 @@ for (const {path} of expandGlobSync(
 	const destDir = dirname(dest)
 	ensureDirSync(destDir)
 
-	const rawCss = Deno.readTextFileSync(path)
-		.replace(/--tw-([\w-]+)/g, '--un-$1')
-		.replace(/(hsla?\(var\([-\w]+\)) ?\//g, '$1,')
+	const rawCss = replacePrefix(Deno.readTextFileSync(path)).replace(
+		/(hsla?\(var\([-\w]+\)) ?\//g,
+		'$1,',
+	)
 	const {css} = processor.process(rawCss)
 
 	console.log('Writing', dest)
