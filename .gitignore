@@ -1,6 +1,7 @@
 node_modules
 *.tgz
 
+/base
 /components
 /themes
 /utilities

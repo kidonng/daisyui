@@ -8,9 +8,11 @@ import functions from 'daisyui/src/colors/functions'
 
 const processor = postcss([nested])
 const root = 'daisyui/src'
+const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
+
 // Utilities should go last
-const dirs = ['themes', 'components', 'utilities']
-const [themesDir, ...styleDirs] = dirs
+const dirs = ['base', 'themes', 'components', 'utilities']
+const [baseDir, themesDir, ...styleDirs] = dirs
 
 const writeIndex = (dir: string, file: string, append = true) =>
 	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
@@ -22,10 +24,18 @@ for (const dir of dirs) {
 	writeIndex('.', `${dir}/index.css`, dir !== dirs[0])
 }
 
+for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
+	const dest = stripRoot(path)
+
+	console.log('Writing', dest)
+	Deno.copyFileSync(path, dest)
+	writeIndex(baseDir, basename(dest))
+}
+
 for (const {path} of expandGlobSync(
 	`${root}/{${styleDirs.join(',')}}/**/*.css`,
 )) {
-	const dest = path.replace(`${Deno.cwd()}/${root}/`, '')
+	const dest = stripRoot(path)
 	const destDir = dirname(dest)
 	ensureDirSync(destDir)
 

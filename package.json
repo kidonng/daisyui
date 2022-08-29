@@ -9,6 +9,7 @@
 	"license": "MIT",
 	"author": "Kid <hi@xuann.wang> (https://xuann.wang/)",
 	"files": [
+		"base",
 		"components",
 		"index.css",
 		"themes",
