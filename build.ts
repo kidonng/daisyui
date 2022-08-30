@@ -15,6 +15,10 @@ const dirs = ['base', 'themes', 'components', 'utilities']
 const [baseDir, themesDir, ...styleDirs] = dirs
 
 const replacePrefix = (css: string) => css.replace(/--tw-([\w-]+)/g, '--un-$1')
+// Space separator is replaced with comma below
+// So we can only use comma instead of slash
+const replaceSlash = (css: string) =>
+	css.replace(/(hsla?\(var\([-\w]+\)) ?\//g, '$1,')
 
 const writeIndex = (dir: string, file: string, append = true) =>
 	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
@@ -28,7 +32,7 @@ for (const dir of dirs) {
 
 for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
 	const dest = stripRoot(path)
-	const css = replacePrefix(Deno.readTextFileSync(path))
+	const css = replaceSlash(replacePrefix(Deno.readTextFileSync(path)))
 
 	console.log('Writing', dest)
 	Deno.writeTextFileSync(dest, css)
@@ -42,10 +46,7 @@ for (const {path} of expandGlobSync(
 	const destDir = dirname(dest)
 	ensureDirSync(destDir)
 
-	const rawCss = replacePrefix(Deno.readTextFileSync(path)).replace(
-		/(hsla?\(var\([-\w]+\)) ?\//g,
-		'$1,',
-	)
+	const rawCss = replaceSlash(replacePrefix(Deno.readTextFileSync(path)))
 	const {css} = processor.process(rawCss)
 
 	console.log('Writing', dest)
@@ -87,7 +88,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 		${selector} {
 			${Object.entries(vars)
 				// UnoCSS transforms `hsl(var(--foo))` to `hsla(var(--foo), var(--un-bar))`
-				// So use command to separate values
+				// So replace space separator with comma
 				.map(([prop, value]) =>
 					[prop, (value as string).replaceAll(' ', ', ')].join(': '),
 				)
