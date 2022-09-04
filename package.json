@@ -1,6 +1,6 @@
 {
 	"name": "@kidonng/daisyui",
-	"version": "1.5.2",
+	"version": "1.6.0",
 	"description": "Redistribution of daisyUI",
 	"scripts": {
 		"prepack": "deno task build && deno task bundle"
