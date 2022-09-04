@@ -85,3 +85,7 @@ To apply a theme other than `auto`, use `[data-theme]` attribute:
 ```html
 <body data-theme="cupcake"></body>
 ```
+
+### Full build
+
+A single file build `full.css` (and `full.min.css`) is available if you want to [use the runtime version of UnoCSS](https://github.com//unocss/unocss/issues/1470#issuecomment-1228071668).

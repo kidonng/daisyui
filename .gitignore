@@ -4,6 +4,7 @@ node_modules
 /base
 /components
 /full.css
+/full.min.css
 /index.css
 /themes
 /utilities
