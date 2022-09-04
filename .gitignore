@@ -3,6 +3,7 @@ node_modules
 
 /base
 /components
+/full.css
+/index.css
 /themes
 /utilities
-/index.css

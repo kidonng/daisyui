@@ -1,6 +1,7 @@
 {
 	"tasks": {
-		"build": "deno run -A build.ts"
+		"build": "deno run -A build.ts",
+		"bundle": "npx -y esbuild --bundle index.css --outfile=full.css"
 	},
 	"lint": {
 		"files": {
