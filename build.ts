@@ -5,8 +5,10 @@ import nested from 'postcss-nested'
 import stripIndent from 'strip-indent'
 import themes from 'daisyui/src/colors/themes'
 import functions from 'daisyui/src/colors/functions'
+import {replacePrefix, replaceSlash, writeIndex} from './utils.ts'
 
 const processor = postcss([nested])
+
 const root = 'daisyui/src'
 const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
 
@@ -14,22 +16,13 @@ const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
 const dirs = ['base', 'themes', 'components', 'utilities']
 const [baseDir, themesDir, ...styleDirs] = dirs
 
-const replacePrefix = (css: string) => css.replace(/--tw-([\w-]+)/g, '--un-$1')
-// Space separator is replaced with comma below
-// So we can only use comma instead of slash
-const replaceSlash = (css: string) =>
-	css.replace(/(hsla?\(var\([-\w]+\)) ?\//g, '$1,')
-
-const writeIndex = (dir: string, file: string, append = true) =>
-	Deno.writeTextFileSync(`${dir}/index.css`, `@import "./${file}";\n`, {
-		append,
-	})
-
+/* Root index */
 for (const dir of dirs) {
 	emptyDirSync(dir)
 	writeIndex('.', `${dir}/index.css`, dir !== dirs[0])
 }
 
+/* `base` */
 for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
 	const dest = stripRoot(path)
 	const css = replaceSlash(replacePrefix(Deno.readTextFileSync(path)))
@@ -39,6 +32,7 @@ for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
 	writeIndex(baseDir, basename(dest))
 }
 
+/* `components` & `utilities` */
 for (const {path} of expandGlobSync(
 	`${root}/{${styleDirs.join(',')}}/**/*.css`,
 )) {
@@ -54,6 +48,7 @@ for (const {path} of expandGlobSync(
 	writeIndex(destDir, basename(dest))
 }
 
+/* `components` & `utilities` index */
 const order = new Map([
 	['global', 0],
 	['unstyled', 1],
@@ -76,6 +71,7 @@ for (const dir of styleDirs) {
 		writeIndex(dir, `${name}/index.css`)
 }
 
+/* `themes` */
 const auto = new Map<string, string>()
 const autoCss = 'auto.css'
 
@@ -107,6 +103,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 		auto.set(name, css.replace(selector, ':root'))
 }
 
+/* `auto` theme */
 const autoDest = `${themesDir}/${autoCss}`
 console.log('Writing', autoDest)
 Deno.writeTextFileSync(
