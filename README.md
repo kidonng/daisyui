@@ -1,6 +1,6 @@
 # daisyUI
 
-This is a redistribution of [daisyUI](https://github.com/saadeghi/daisyui). It is intended to be used with [UnoCSS](https://github.com/kidonng/unocss-preset-daisy).
+> A [UnoCSS](https://github.com/kidonng/unocss-preset-daisy)-compatible redistribution of [daisyUI](https://github.com/saadeghi/daisyui)
 
 - [Nested rules are unwrapped](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L9)
 - `@apply` directives are preserved (to be processed by [@unocss/transformer-directives](https://github.com/unocss/unocss/tree/main/packages/transformer-directives))
