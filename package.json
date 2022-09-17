@@ -16,5 +16,13 @@
 		"index.css",
 		"themes",
 		"utilities"
-	]
+	],
+	"devDependencies": {
+		"xo": "^0.52.3"
+	},
+	"pnpm": {
+		"overrides": {
+			"typescript": "npm:@kidonng/typescript@^4.8.3"
+		}
+	}
 }
