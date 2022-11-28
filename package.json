@@ -3,7 +3,7 @@
 	"version": "2.42.1",
 	"description": "Redistribution of daisyUI",
 	"scripts": {
-		"prepack": "deno task build && deno task bundle && deno task bundle-min"
+		"prepack": "cd daisyui && npm i && npm run build && cd .. && deno task build && deno task bundle && deno task bundle-min"
 	},
 	"repository": "kidonng/daisyui",
 	"license": "MIT",
