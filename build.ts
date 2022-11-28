@@ -9,7 +9,7 @@ import {replacePrefix, replaceSlash, writeIndex} from './utils.ts'
 
 const processor = postcss([nested])
 
-const root = 'daisyui/src'
+const root = 'daisyui/dist'
 const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
 
 // Utilities should go last
