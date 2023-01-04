@@ -1,13 +1,15 @@
 import {expandGlobSync, emptyDirSync, ensureDirSync} from 'std/fs/mod.ts'
 import {dirname, basename} from 'std/path/mod.ts'
+import {existsSync} from 'std/fs/mod.ts'
 import postcss from 'postcss'
 import nested from 'postcss-nested'
+import autoprefixer from 'autoprefixer'
 import stripIndent from 'strip-indent'
 import themes from 'daisyui/src/colors/themes'
 import functions from 'daisyui/src/colors/functions'
 import {replacePrefix, replaceSlash, writeIndex} from './utils.ts'
 
-const processor = postcss([nested])
+const processor = postcss([nested, autoprefixer])
 
 const root = 'daisyui/src'
 const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
@@ -17,6 +19,10 @@ const dirs = ['base', 'themes', 'components', 'utilities']
 const [baseDir, themesDir, ...styleDirs] = dirs
 
 /* Root index */
+if (existsSync('./index.css')) {
+	Deno.removeSync('./index.css')
+}
+
 for (const dir of dirs) {
 	emptyDirSync(dir)
 	writeIndex('.', `${dir}/index.css`, dir !== dirs[0])
