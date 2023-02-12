@@ -1,13 +1,14 @@
 import {expandGlobSync, emptyDirSync, ensureDirSync} from 'std/fs/mod.ts'
 import {dirname, basename} from 'std/path/mod.ts'
 import postcss from 'postcss'
+import autoprefixer from 'autoprefixer'
 import nested from 'postcss-nested'
 import stripIndent from 'strip-indent'
 import themes from 'daisyui/src/colors/themes'
 import functions from 'daisyui/src/colors/functions'
 import {replacePrefix, replaceSlash, writeIndex} from './utils.ts'
 
-const processor = postcss([nested])
+const processor = postcss([autoprefixer, nested])
 
 const root = 'daisyui/src'
 const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
