@@ -9,13 +9,12 @@
 			"exclude": ["daisyui"]
 		}
 	},
-	"importMap": "deno.json",
 	"imports": {
-		"daisyui/": "https://esm.sh/daisyui@2.24.0/",
-		"postcss-nested": "https://cdn.skypack.dev/postcss-nested@5.0.6",
-		"autoprefixer": "https://jspm.dev/autoprefixer",
-		"postcss": "https://esm.sh/postcss@8.4.16",
-		"std/": "https://deno.land/std@0.153.0/",
-		"strip-indent": "https://esm.sh/strip-indent@4.0.0"
+    "autoprefixer": "npm:autoprefixer@10.4.13",
+		"daisyui/": "https://esm.sh/daisyui@2.50.0/",
+		"postcss-nested": "npm:postcss-nested@6.0.0",
+		"postcss": "npm:postcss@8.4.21",
+		"std/": "https://deno.land/std@0.177.0/",
+		"strip-indent": "npm:strip-indent@4.0.0"
 	}
 }
