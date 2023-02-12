@@ -10,7 +10,7 @@
 		}
 	},
 	"imports": {
-    "autoprefixer": "npm:autoprefixer@10.4.13",
+		"autoprefixer": "npm:autoprefixer@10.4.13",
 		"daisyui/": "https://esm.sh/daisyui@2.50.0/",
 		"postcss-nested": "npm:postcss-nested@6.0.0",
 		"postcss": "npm:postcss@8.4.21",
