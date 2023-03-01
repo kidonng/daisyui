@@ -1,20 +1,22 @@
-import {expandGlobSync, emptyDirSync, ensureDirSync} from 'std/fs/mod.ts'
-import {dirname, basename} from 'std/path/mod.ts'
+import {readFileSync, writeFileSync, readdirSync} from 'node:fs'
+import {dirname, basename} from 'node:path'
+import {globbySync} from 'globby'
+import {emptyDirSync, ensureDirSync} from 'fs-extra'
 import postcss from 'postcss'
 import autoprefixer from 'autoprefixer'
 import nested from 'postcss-nested'
 import stripIndent from 'strip-indent'
-import themes from 'daisyui/src/colors/themes'
-import functions from 'daisyui/src/colors/functions'
-import {replacePrefix, replaceSlash, writeIndex} from './utils.ts'
+import themes from 'daisyui/src/colors/themes.js'
+import functions from 'daisyui/src/colors/functions.js'
+import {replacePrefix, replaceSlash, writeIndex} from './utils.js'
 
-const processor = postcss([autoprefixer, nested])
+const processor = postcss.default([autoprefixer, nested])
 
 const root = 'daisyui/src'
-const stripRoot = (path: string) => path.replace(`${Deno.cwd()}/${root}/`, '')
+const stripRoot = (path: string) => path.replace(`${root}/`, '')
 
 // Utilities should go last
-const dirs = ['base', 'themes', 'components', 'utilities']
+const dirs = ['base', 'themes', 'components', 'utilities'] as const
 const [baseDir, themesDir, ...styleDirs] = dirs
 
 /* Root index */
@@ -24,28 +26,26 @@ for (const dir of dirs) {
 }
 
 /* `base` */
-for (const {path} of expandGlobSync(`${root}/${baseDir}/*.css`)) {
+for (const path of globbySync(`${root}/${baseDir}/*.css`)) {
 	const dest = stripRoot(path)
-	const css = replaceSlash(replacePrefix(Deno.readTextFileSync(path)))
+	const css = replaceSlash(replacePrefix(readFileSync(path, 'utf8')))
 
 	console.log('Writing', dest)
-	Deno.writeTextFileSync(dest, css)
+	writeFileSync(dest, css)
 	writeIndex(baseDir, basename(dest))
 }
 
 /* `components` & `utilities` */
-for (const {path} of expandGlobSync(
-	`${root}/{${styleDirs.join(',')}}/**/*.css`,
-)) {
+for (const path of globbySync(`${root}/{${styleDirs.join(',')}}/**/*.css`)) {
 	const dest = stripRoot(path)
 	const destDir = dirname(dest)
 	ensureDirSync(destDir)
 
-	const rawCss = replaceSlash(replacePrefix(Deno.readTextFileSync(path)))
+	const rawCss = replaceSlash(replacePrefix(readFileSync(path, 'utf8')))
 	const {css} = processor.process(rawCss)
 
 	console.log('Writing', dest)
-	Deno.writeTextFileSync(dest, css)
+	writeFileSync(dest, css)
 	writeIndex(destDir, basename(dest))
 }
 
@@ -60,7 +60,7 @@ for (const dir of styleDirs) {
 	const ordered: string[] = []
 	const unordered: string[] = []
 
-	for (const {name} of Deno.readDirSync(dir)) {
+	for (const name of readdirSync(dir)) {
 		if (order.has(name)) {
 			ordered[order.get(name)!] = name
 		} else {
@@ -86,9 +86,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 			${Object.entries(vars)
 				// UnoCSS transforms `hsl(var(--foo))` to `hsla(var(--foo), var(--un-bar))`
 				// So replace space separator with comma
-				.map(([prop, value]) =>
-					[prop, (value as string).replaceAll(' ', ', ')].join(': '),
-				)
+				.map(([prop, value]) => [prop, value.replaceAll(' ', ', ')].join(': '))
 				.join(';\n\t\t\t')};
 		}
 	`).trim()
@@ -97,7 +95,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 	const dest = `${themesDir}/${file}`
 
 	console.log('Writing', dest)
-	Deno.writeTextFileSync(dest, css)
+	writeFileSync(dest, css)
 	writeIndex(themesDir, file)
 
 	if (name === 'dark' || name === 'light')
@@ -107,7 +105,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 /* `auto` theme */
 const autoDest = `${themesDir}/${autoCss}`
 console.log('Writing', autoDest)
-Deno.writeTextFileSync(
+writeFileSync(
 	autoDest,
 	// Dark style should go after light style
 	`${auto.get('light')}\n@media (prefers-color-scheme: dark) {\n${auto.get(

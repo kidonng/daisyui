@@ -15,11 +15,13 @@ jobs:
         with:
           fetch-depth: 20
           submodules: true
+      - run: npm i -g pnpm@7
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
+          cache: pnpm
           registry-url: https://registry.npmjs.org/
-      - uses: denoland/setup-deno@v1
+      - run: pnpm install
       - run: |
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com

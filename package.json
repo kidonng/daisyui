@@ -3,11 +3,16 @@
 	"version": "2.50.1-0",
 	"description": "Redistribution of daisyUI",
 	"scripts": {
-		"prepack": "deno task build && deno task bundle && deno task bundle-min"
+		"build": "tsx build.ts",
+		"bundle": "esbuild --bundle index.css --outfile=full.css",
+		"bundle-min": "esbuild --bundle index.css --minify --outfile=full.min.css",
+		"prepack": "npm run build && npm run bundle && npm run bundle-min",
+		"test": "tsc --noEmit"
 	},
 	"repository": "kidonng/daisyui",
 	"license": "MIT",
 	"author": "Kid <hi@xuann.wang> (https://xuann.wang/)",
+	"type": "module",
 	"files": [
 		"base",
 		"components",
@@ -18,11 +23,19 @@
 		"utilities"
 	],
 	"devDependencies": {
+		"@sindresorhus/tsconfig": "^3.0.1",
+		"@types/fs-extra": "^11.0.1",
+		"@types/node": "^18.14.2",
+		"autoprefixer": "^10.4.13",
+		"daisyui": "^2.51.2",
+		"esbuild": "^0.17.10",
+		"fs-extra": "^11.1.0",
+		"globby": "^13.1.3",
+		"postcss": "^8.4.21",
+		"postcss-nested": "^6.0.1",
+		"strip-indent": "^4.0.0",
+		"tsx": "^3.12.3",
+		"typescript": "^4.9.5",
 		"xo": "^0.52.3"
-	},
-	"pnpm": {
-		"overrides": {
-			"typescript": "npm:@kidonng/typescript@^4.8.3"
-		}
 	}
 }
