@@ -14,7 +14,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 20
-          submodules: true
       - run: npm i -g pnpm@7
       - uses: actions/setup-node@v3
         with:

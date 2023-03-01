@@ -12,7 +12,7 @@ import {replacePrefix, replaceSlash, writeIndex} from './utils.js'
 
 const processor = postcss.default([autoprefixer, nested])
 
-const root = 'daisyui/src'
+const root = 'node_modules/daisyui-src/src'
 const stripRoot = (path: string) => path.replace(`${root}/`, '')
 
 // Utilities should go last
