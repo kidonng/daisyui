@@ -91,7 +91,7 @@ for (const [selector, theme] of Object.entries(themes)) {
 		}
 	`).trim()
 
-	const file = `${name}.css`
+	const file = `${name!}.css`
 	const dest = `${themesDir}/${file}`
 
 	console.log('Writing', dest)
@@ -108,7 +108,7 @@ console.log('Writing', autoDest)
 writeFileSync(
 	autoDest,
 	// Dark style should go after light style
-	`${auto.get('light')}\n@media (prefers-color-scheme: dark) {\n${auto.get(
+	`${auto.get('light')!}\n@media (prefers-color-scheme: dark) {\n${auto.get(
 		'dark',
-	)}\n}`,
+	)!}\n}`,
 )
