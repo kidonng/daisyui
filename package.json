@@ -28,7 +28,7 @@
 		"@types/node": "^18.14.2",
 		"autoprefixer": "^10.4.13",
 		"daisyui": "^2.51.2",
-		"daisyui-src": "github:saadeghi/daisyui#v2.50.0",
+		"daisyui-src": "github:saadeghi/daisyui#v2.51.3",
 		"esbuild": "^0.17.10",
 		"fs-extra": "^11.1.0",
 		"globby": "^13.1.3",
