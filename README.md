@@ -81,7 +81,9 @@ Utility styles should be imported after component styles.
 @import '@kidonng/daisyui/themes/auto.css';
 ```
 
-To apply a theme other than `auto`, specify `[data-theme]` attribute in HTML:
+Refer to [daisyUI documentation](https://daisyui.com/docs/themes/) for the list of themes.
+
+To use a theme other than `auto`, you need to also specify `[data-theme]` attribute in HTML:
 
 ```html
 <body data-theme="cupcake"></body>
