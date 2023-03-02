@@ -69,6 +69,8 @@ import '@kidonng/daisyui/utilities/styled/button.css'
 
 ### Themes
 
+> **Note**: refer to [`unocss-preset-daisy` documentation](https://github.com/kidonng/unocss-preset-daisy#custom-themes) for custom themes.
+
 ```js
 /* Import all themes */
 import '@kidonng/daisyui/themes/index.css'
