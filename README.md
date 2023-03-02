@@ -19,14 +19,14 @@ npm installl @kidonng/daisyui
 
 The easiest way to use this package is to import all the styles:
 
-```css
-@import '@kidonng/daisyui/index.css';
+```js
+import '@kidonng/daisyui/index.css'
 ```
 
 To only import what you need, always import `base` first:
 
-```css
-@import '@kidonng/daisyui/base/index.css';
+```js
+import '@kidonng/daisyui/base/index.css'
 /* Other imports */
 ```
 
@@ -34,51 +34,51 @@ Read on to see how to import components, utilities and themes.
 
 ### Components
 
-```css
+```js
 /* Import all components */
-@import '@kidonng/daisyui/components/index.css';
+import '@kidonng/daisyui/components/index.css'
 
 /* Import all unstyled & styled components (same as above) */
-@import '@kidonng/daisyui/components/unstyled/index.css';
-@import '@kidonng/daisyui/components/styled/index.css';
+import '@kidonng/daisyui/components/unstyled/index.css'
+import '@kidonng/daisyui/components/styled/index.css'
 
 /* Import components one by one */
-@import '@kidonng/daisyui/components/unstyled/button.css';
+import '@kidonng/daisyui/components/unstyled/button.css'
 /* `styled` components should be imported after `unstyled` components */
-@import '@kidonng/daisyui/components/styled/button.css';
+import '@kidonng/daisyui/components/styled/button.css'
 ```
 
 ### Utilities
 
 Utility styles should be imported after component styles.
 
-```css
+```js
 /* Import all utilities */
-@import '@kidonng/daisyui/utilities/index.css';
+import '@kidonng/daisyui/utilities/index.css'
 
 /* Import global, unstyled & styled utilties (same as above) */
-@import '@kidonng/daisyui/utilities/global/index.css';
-@import '@kidonng/daisyui/utilities/unstyled/index.css';
-@import '@kidonng/daisyui/utilities/styled/index.css';
+import '@kidonng/daisyui/utilities/global/index.css'
+import '@kidonng/daisyui/utilities/unstyled/index.css'
+import '@kidonng/daisyui/utilities/styled/index.css'
 
 /* Import utility one by one */
-@import '@kidonng/daisyui/utilities/unstyled/button.css';
+import '@kidonng/daisyui/utilities/unstyled/button.css'
 /* `styled` utilities should be imported after `unstyled` utilities */
-@import '@kidonng/daisyui/utilities/styled/button.css';
+import '@kidonng/daisyui/utilities/styled/button.css'
 ```
 
 ### Themes
 
-```css
+```js
 /* Import all themes */
-@import '@kidonng/daisyui/themes/index.css';
+import '@kidonng/daisyui/themes/index.css'
 
 /* Import themes one by one */
-@import '@kidonng/daisyui/themes/cupcake.css';
-@import '@kidonng/daisyui/themes/lemonade.css';
+import '@kidonng/daisyui/themes/cupcake.css'
+import '@kidonng/daisyui/themes/lemonade.css'
 
 /* Import auto theme (uses light or dark theme based on `prefers-color-scheme`) */
-@import '@kidonng/daisyui/themes/auto.css';
+import '@kidonng/daisyui/themes/auto.css'
 ```
 
 Refer to [daisyUI documentation](https://daisyui.com/docs/themes/) for the list of themes.
