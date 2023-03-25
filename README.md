@@ -1,5 +1,7 @@
 # daisyUI
 
+> **Warning**: this package is **NOT** needed since `unocss-preset-daisy` 3.0.0.
+
 > A [UnoCSS](https://github.com/unocss/unocss)-compatible redistribution of [daisyUI](https://github.com/saadeghi/daisyui)
 
 > **Note**: this package is supposed to be used with [unocss-preset-daisy](https://github.com/kidonng/unocss-preset-daisy).
