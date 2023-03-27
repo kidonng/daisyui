@@ -4,8 +4,6 @@
 
 > A [UnoCSS](https://github.com/unocss/unocss)-compatible redistribution of [daisyUI](https://github.com/saadeghi/daisyui)
 
-> **Note**: this package is supposed to be used with [unocss-preset-daisy](https://github.com/kidonng/unocss-preset-daisy).
-
 - [Nested rules are unwrapped](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L9)
 - `@apply` directives are preserved (to be processed by [@unocss/transformer-directives](https://github.com/unocss/unocss/tree/main/packages/transformer-directives))
 - [Theme](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L75-L79) and [`hsla()`](https://github.com/kidonng/daisyui/blob/5c8e03665b59dcd2646bb284f6639d240a066c13/build.ts#L34) variables are comma separated (instead of space)
